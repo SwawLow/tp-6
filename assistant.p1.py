@@ -1,3 +1,129 @@
+fichier_actuel = None
+liste_mots = []
+est_liste_mots = False
+
+def file(nom):
+    """charge un fichier"""
+    global fichier_actuel
+    try:
+        f = open(nom, 'r')
+        contenu = f.read()
+        f.close()
+        fichier_actuel = nom
+        print("Loaded " + nom)
+    except:
+        print("Error: file not found")
+
+def info():
+    # montre le nombre de lignes et caracteres
+    global fichier_actuel
+    if fichier_actuel == None:
+        print("Error: no file loaded")
+        return
+    
+    f = open(fichier_actuel, 'r')
+    contenu = f.read()
+    f.close()
+    
+    lignes = contenu.split('\n')
+    nb_lignes = len(lignes)
+    nb_char = len(contenu)
+    
+    print(str(nb_lignes) + " lines")
+    print(str(nb_char) + " caracters")
+
+def words():
+    # lit le fichier comme une liste de mots
+    global fichier_actuel, liste_mots, est_liste_mots
+    
+    if fichier_actuel == None:
+        print("Error: no file loaded")
+        return
+    
+    f = open(fichier_actuel, 'r')
+    lignes = f.readlines()
+    f.close()
+    
+    liste_mots = []
+    i = 0
+    for ligne in lignes:
+        if i == 0:
+            i = i + 1
+            continue
+        
+        ligne = ligne.strip()
+        if ligne != "":
+            parts = ligne.split()
+            if len(parts) > 0:
+                liste_mots.append(parts[0].lower())
+        i = i + 1
+    
+    est_liste_mots = True
+    print("Read file as list of words")
+
+def executer_commande(commande):
+    # execute la commande
+    global fichier_actuel, liste_mots, est_liste_mots
+    
+    parts = commande.split()
+    
+    if len(parts) == 0:
+        return True
+    
+    cmd = parts[0].lower()
+    
+    
+    if cmd == "file":
+        if len(parts) < 2:
+            print("Error: missing filename")
+        else:
+            file(parts[1])
+    
+    elif cmd == "info":
+        info()
+    
+    elif cmd == "words":
+        words()
+    
+    elif cmd == "exit":
+        return False
+    
+    
+    elif cmd == "search":
+       
+        pass
+    
+    elif cmd == "sum":
+        
+        pass
+    
+    elif cmd == "avg":
+        
+        pass
+    
+    elif cmd == "help":
+        
+        pass
+    
+    else:
+        print("Unknown command")
+    
+    return True
+
+def main():
+    # fonction principale
+    print("Welcome to your personalized tool!")
+    
+    continuer = True
+    while continuer:
+        commande = input("> ")
+        continuer = executer_commande(commande)
+
+if __name__ == "__main__":
+    main()
+
+
+
 def give_question(question: str, answer_pos: str, answer_neg: str, explanation=None) -> bool:
     """
         pre: question, answer_pos et answer_neg son obligatoir mais explanation est optionel
@@ -155,3 +281,4 @@ def main():
     answer = None
 
 main()
+
