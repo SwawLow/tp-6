@@ -1,5 +1,5 @@
-list_mots = None
 lang = None
+list_mots = None
 input_file = None
 
 def give_question(question: str, answer_pos: str, answer_neg: str, explanation=None) -> bool:
@@ -34,40 +34,44 @@ def word_approximation(input: str, word_list: list) -> str:
             word_list est la list qui est comparer a input
         post: retourn une un str le plus proche d'input
     """
+    
+    if len(word_list) < 1:
+        return
 
-    #["AVG", "EXIT", "FILE", "HELP", "INFO", "LANGUAGE", "SEARCH", "SUM", "WORDS"]
+    try:
+        first = 0
+        last = len(word_list)-1
+        found = False
 
-    first = 0
-    last = len(word_list)-1
-    found = False
+        length = len(input)
+        if length == 0:
+            return None
 
-    length = len(input)
-    if length == 0:
-        return None
-
-    while first<=last and not found:
-        middle = (first + last)//2
-        count_last = 0
-        count_first = 0
-        count = 0
-        for q in range(length):
-            count += 1 if word_list[middle][q] == input[q] else 0
-        if count == length:
-            found = True
-        else:
-            for n in range(length):
-                if input[n] < word_list[middle][n]:
-                    count_last+=1
-                else:
-                    count_first+=1
-
-            if count_last > count_first:
-                last = middle-1
+        while first<=last and not found:
+            middle = (first + last)//2
+            count_last = 0
+            count_first = 0
+            count = 0
+            for q in range(length):
+                count += 1 if word_list[middle][q] == input[q] else 0
+            if count == length:
+                found = True
             else:
-                first = middle+1
+                for n in range(length):
+                    if input[n] < word_list[middle][n]:
+                        count_last+=1
+                    else:
+                        count_first+=1
 
-    if found == True:
-        return word_list[middle]
+                if count_last > count_first:
+                    last = middle-1
+                else:
+                    first = middle+1
+
+        if found == True:
+            return word_list[middle]
+    except:
+        pass
     
 def language() -> str:
     """
@@ -104,9 +108,13 @@ def info(input_file: str, lang: str):
         print("Error: no file loaded" if lang == "en" else "Erreur: aucun fichier chargé")
         return
     
-    f = open(input_file, 'r')
-    contenu = f.read()
-    f.close()
+    try:
+        f = open(input_file, 'r')
+        contenu = f.readlines()
+        f.close()
+    except:
+        print("Error: file does not exist" if lang == "en" else "Erreur: fichier n'existe pas")
+        return
 
     lignes = contenu.split('\n')
     nb_lignes = len(lignes)
@@ -125,9 +133,13 @@ def words(input_file: str, lang: str) -> list:
         print("Error: no file loaded" if lang == "en" else "Erreur: aucun fichier chargé")
         return
     
-    f = open(input_file, 'r')
-    lignes = f.readlines()
-    f.close()
+    try:
+        f = open(input_file, 'r')
+        lignes = f.readlines()
+        f.close()
+    except:
+        print("Error: file does not exist" if lang == "en" else "Erreur: fichier n'existe pas")
+        return
     
     list_mots = []
     i = 0
@@ -170,12 +182,13 @@ def sum(lang: str):
             si le chiffre est entier, il devien int avant le print
     """
     contin_u = True
+    sum = None
     while contin_u == True:
         try:
             print("the number of digits in the sum (no decimals)" if lang == "en" else "le nombre de chiffre dans la somme (pas de decimal)")
             n_sum = int(input("> "))
-            while n_sum == 1:
-                print("A sum cannot have 1 term" if lang == "en" else "Une somme ne peut pas avoir 1 term")
+            while not n_sum >= 2:
+                print(f"A sum cannot have {n_sum} term" if lang == "en" else f"Une somme ne peut pas avoir {n_sum} term")
                 n_sum = int(input("> "))
             sum = 0
             for n in range(abs(n_sum)):
@@ -186,6 +199,7 @@ def sum(lang: str):
             "The number of digits in the average cannot be a decimal.\n" if lang == "en" else "Une erreur s'est produite.\n" \
             "Aucune lettre peux se trouver dans une somme.\n" \
             "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
+            sum = None
         if sum:
             if str(sum) == str(sum//1):
                 print(f"The sum: {int(sum)}\n" if lang == "en" else f"\nLa somme: {int(sum)}\n")
@@ -204,7 +218,7 @@ def avg(lang: str):
         try:
             print("the number of digits in the average" if lang == "en" else "le nombre de chiffre dans la moyenne (pas de decimal)")
             n_avg = int(input("> "))
-            while n_avg < 1:
+            while not n_avg >= 2:
                 print(f"An average cannot have {n_avg} interger" if lang == "en" else f"Une moyenne ne peut pas avoir {n_avg} chiffre")
                 n_avg = int(input("> "))
             sum = 0
@@ -259,12 +273,19 @@ def main():
     real_answer = ""
     print("Welcome to your personalized tool!" if lang == "en" else "Bienvenue sur votre outil personnalisé!")
     while True:
-        
         real_answer = ""
+        failed = [False,""]
         while not real_answer:
             print("Write a command (\"help\" to view full list of commands)" if lang == "en" else "Ecriver une commande (écrivez \"help\" pour afficher toutes les commandes)")
+            print(f"The \"{failed[1]}\" command doesn't exist" if lang == "en" else f"La command \"{failed[1]}\" n'existe pas.") if failed[0] == True else ""
             command = input("> ").upper()
+            failed[1] = command
             real_answer = word_approximation(command, commands)
+            if not real_answer:
+                failed[0] = True
+            else:
+                failed[0] = False
+
 
         if real_answer == "HELP":
         #help: montre des instructions à l'utilisateur
@@ -293,6 +314,6 @@ def main():
         elif real_answer == "EXIT":
             break
         else:
-            print("Invalid command, write \"help\" for full list\n" if lang == "en" else "Commande Invalid, écrivez \"help\" pour la liste complète\n")
+            print("Invalid command\n" if lang == "en" else "Commande Invalid\n")
 
 main()
