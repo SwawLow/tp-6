@@ -1,7 +1,13 @@
 def give_question(question: str, answer_pos: str, answer_neg: str, explanation=None) -> bool:
     """
         pre: question, answer_pos et answer_neg son obligatoir mais explanation est optionel
-        post: print du text en fonction de si l'input de l'utilisateur est dans un doc,
+            question: la question demander
+            answer_pos: le text qui afficher pour la reponse positive
+            answer_neg: le text qui afficher pour la reponse negative
+            explanation: la specification pour l'utilisateur, ex: "yes or no"
+            si explanation est pas specifier, par defaut "answer_pos ou answer_neg" sera afficher
+
+        post: retourn une valeur bool en fonction de la reponse fourni
     """
     answer = input(f"{question}({explanation if explanation else f"{answer_pos} ou {answer_neg}"}): ").upper()
     answer_pos = answer_pos.upper()
@@ -49,7 +55,7 @@ def search(input_file: str):
                     break
 
         print(f"{search.lower()} est dans le document") if count != 0 else print(f"{search.lower()} est pas dans le document")
-        conti_u = True if give_question("Voulez vous continuer?", "oui", "non", "soit oui ou non") else False    
+        conti_u = True if give_question("Voulez vous continuer?", "oui", "non", "soit oui ou non aucune, autre reponse sera tolerer") else False    
         file.close()
     print("aucune fichier n'a été sélectionner\nOrienter vous ver la command \"file\"") if not search else ""
 
@@ -59,22 +65,24 @@ def sum():
         post: print la somme des termes saisie,
             si le chiffre est entier, il devien int avant le print
     """
+    conti_u = True
+    while conti_u == True:
+        try:
+            n_sum = int(input("le nombre de chiffre dans la somme (pas de decimal): "))
+            sum = 0
+            for n in range(n_sum):
+                sum += float(input(f"Terme n°{n+1}: "))
+        except:
+            print("Une erreur s'est produite.\n" \
+            "Aucune lettre peux se trouver dans une moyenne.\n" \
+            "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
 
-    try:
-        n_sum = int(input("le nombre de chiffre dans la somme (pas de decimal): "))
-        sum = 0
-        for n in range(n_sum):
-            sum += float(input(f"Terme n°{n+1}: "))
-    except:
-        print("Une erreur s'est produite.\n" \
-        "Aucune lettre peux se trouver dans une moyenne.\n" \
-        "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
-
-    if sum:
-        if str(sum) == str(sum//1):
-            print(f"\nLa somme: {str(int(sum))}\n")
-        else:
-            print(f"\nLa somme: {str(sum)}\n")
+        if sum:
+            if str(sum) == str(sum//1):
+                print(f"\nLa somme: {str(int(sum))}\n")
+            else:
+                print(f"\nLa somme: {str(sum)}\n")
+        conti_u = True if give_question("Voulez vous continuer?", "oui", "non", "soit oui ou non, aucune autre reponse sera tolerer") else False    
 
 def avg():
     """
@@ -82,22 +90,25 @@ def avg():
         post: print la moyene des chiffre saisie, 
             si le chiffre est entier, il devien int avant le print
     """
-    try:
-        n_avg = int(input("le nombre de chiffre dans la moyenne (pas de decimal): "))
-        sum = 0
-        for n in range(n_avg):
-            sum += float(input(f"Chiffre n°{n+1}: "))
-    except:
-        print("Une erreur s'est produite.\n" \
-        "Aucune lettre peux se trouver dans une moyenne.\n" \
-        "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
+    conti_u = True
+    while conti_u == True:
+        try:
+            n_avg = int(input("le nombre de chiffre dans la moyenne (pas de decimal): "))
+            sum = 0
+            for n in range(n_avg):
+                sum += float(input(f"Chiffre n°{n+1}: "))
+        except:
+            print("Une erreur s'est produite.\n" \
+            "Aucune lettre peux se trouver dans une moyenne.\n" \
+            "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
 
-    if sum:
-        average = sum/n_avg
-        if str(average) == str(average//1):
-            print(f"\nLa moyenne: {(int(average))}\n")
-        else:
-            print(f"\nLa moyenne: {str(average)}\n")
+        if sum:
+            average = sum/n_avg
+            if str(average) == str(average//1):
+                print(f"\nLa moyenne: {(int(average))}\n")
+            else:
+                print(f"\nLa moyenne: {str(average)}\n")
+        conti_u = True if give_question("Voulez vous continuer?", "oui", "non", "soit oui ou non, aucune autre reponse sera tolerer") else False    
 
 
 def help():
