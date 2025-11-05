@@ -1,3 +1,7 @@
+list_mots = None
+lang = None
+input_file = None
+
 def give_question(question: str, answer_pos: str, answer_neg: str, explanation=None) -> bool:
     """
         pre: question, answer_pos et answer_neg son obligatoir mais explanation est optionel
@@ -23,7 +27,7 @@ def give_question(question: str, answer_pos: str, answer_neg: str, explanation=N
 
     return bool_answer
 
-def word_approximation(input: str, word_list: list):
+def word_approximation(input: str, word_list: list) -> str:
         
     """
         pre: input peut etre tout les str possible
@@ -65,7 +69,7 @@ def word_approximation(input: str, word_list: list):
     if found == True:
         return word_list[middle]
     
-def language():
+def language() -> str:
     """
         post: retourn "en" ou "fr"
     """
@@ -111,7 +115,7 @@ def info(input_file: str, lang: str):
     print(f"{nb_lignes} lines" if lang == "en" else f"{nb_lignes} lignes")
     print(f"{nb_char} characters" if lang == "en" else f"{nb_char} caracters")
 
-def words(input_file: str, lang: str):
+def words(input_file: str, lang: str) -> list:
     """
         pre: input_file est un chemin de fichier
             lang est soit "en" ou "fr"
@@ -246,9 +250,11 @@ def help(lang: str):
     "exit: arrête l'outil\n")
 
 def main():
-    list_mots = None
-    lang = language()
-    input_file = "tp6\README.txt"
+    global lang
+    global list_mots
+    global input_file
+    if not lang:
+        lang = language()
     commands = ["AVG", "EXIT", "FILE", "HELP", "INFO", "LANGUAGE", "SEARCH", "SUM", "WORDS"]
     real_answer = ""
     print("Welcome to your personalized tool!" if lang == "en" else "Bienvenue sur votre outil personnalisé!")
