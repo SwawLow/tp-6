@@ -13,7 +13,7 @@ def give_question(question: str, answer_pos: str, answer_neg: str, explanation=N
 
         post: retourn une valeur bool en fonction de la reponse fourni
     """
-    print(f"{question}({explanation if explanation else f"{answer_pos} ou {answer_neg}"}):")
+    print(f"{question}({explanation if explanation else f'{answer_pos} or/ou {answer_neg}'}):")
     answer = input("> ").upper()
     answer_pos = answer_pos.upper()
     answer_neg = answer_neg.upper()
@@ -88,7 +88,7 @@ def file_get(lang: str) -> str:
     while contin_u == True:
         print("Write file name that is contained within the same folder as tp6") if lang == "en" else print("Saisissez le nom du fichier qui se trouve dans le même dossier que tp6")
         file_name = input("> ")
-        full_name = f"tp6\{file_name}"
+        full_name = f"{file_name}"
         try:
             f = open(full_name, 'r')
             f.close()
@@ -142,7 +142,6 @@ def words(input_file: str, lang: str) -> list:
         return
     
     list_mots = []
-    i = 0
 
     for k in range(len(lignes)):
             lignes[k] = lignes[k].split()
@@ -213,6 +212,7 @@ def avg(lang: str):
         post: print la moyene des chiffre saisie, 
             si le chiffre est entier, il devien int avant le print
     """
+    sum = None
     contin_u = True
     while contin_u == True:
         try:
@@ -231,8 +231,7 @@ def avg(lang: str):
             "Aucune lettre peux se trouver dans une moyenne.\n" \
             "Le nombre de chiffre dans la moyenne paux pas etre decimal\n")
 
-
-        average = sum/n_avg
+        average = sum/n_avg if sum else 0
         if str(average) == str(average//1):
             print(f"The Average: {int(average)}\n" if lang == "en" else f"\nLa moyenne: {int(average)}\n")
         else:
@@ -317,3 +316,4 @@ def main():
             print("Invalid command\n" if lang == "en" else "Commande Invalid\n")
 
 main()
+#il est possible de seulement mettre le debut d'une command
