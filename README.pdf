@@ -1,0 +1,22 @@
+Readme Mission 6
+Palaba Eye Grace 
+Sébastian Sheridan
+Description
+C’est un assistant qui fonctionne dans le terminal pour gérer des fichiers et faire quelques calculs. On peut charger des fichiers, voir combien de lignes ils ont, chercher des mots dedans et calculer des sommes ou moyennes.
+Comment lancer
+Python assitant.py
+Au début il demande la langue (français ou anglais), après on tape les commandes qu'on veut.
+Les commandes 
+–	file : charge un fichier
+–	Info : montre combien de lignes et caractères
+–	Words : lit le fichier comme liste de mots
+–	Search : cherche un mot dans la liste
+–	Sum : calcule une somme
+–	avq  :calcule une moyenne
+–	help :montre toutes les commandes
+–	Language : change de langue 
+–	exit :  quitte
+Quelsques problèmes rencontrés 
+–	Gestion des erreurs Au début le programme plantait quand on donnait un fichier qui existe pas. On a ajouté des try/except pour gérer ça et demander à l'utilisateur de réessayer
+Tests
+Lancer : python test.py
